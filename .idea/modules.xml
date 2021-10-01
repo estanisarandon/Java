@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/TextAdventure/TextAdventure.iml" filepath="$PROJECT_DIR$/TextAdventure/TextAdventure.iml" />
+      <module fileurl="file://$PROJECT_DIR$/javakyh.iml" filepath="$PROJECT_DIR$/javakyh.iml" />
+    </modules>
+  </component>
+</project>
