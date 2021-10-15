@@ -1,24 +1,23 @@
 package kyh.textadventure;
 
-// Basic item class for textadventure game.
-// All items will be of this type, or derived from this type.
 public class Item {
-    protected String type;          // what object is it (i.e. name/title/something else.
-    protected String description;   // description of object.
+    protected String type;
+    protected String description;
+    protected boolean object;
 
-    // Constructor that creates the item and sets type and description of item.
-    public Item(String inType, String inDescription) {
+    public Item(String inType, String inDescription, boolean inobject) {
         type = inType;
         description = inDescription;
+        object =  inobject;
     }
 
     public String getType() {
         return type;
     }
-
     public String getDescription() {
         return description;
     }
+    public boolean getObject(){return object; }
 
     // returns a string representation of the item.
     @Override
