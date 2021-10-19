@@ -3,12 +3,11 @@ package kyh.textadventure;
 public class Item {
     protected String type;
     protected String description;
-    protected boolean object;
 
-    public Item(String inType, String inDescription, boolean inobject) {
+
+    public Item(String inType, String inDescription) {
         type = inType;
         description = inDescription;
-        object =  inobject;
     }
 
     public String getType() {
@@ -17,7 +16,7 @@ public class Item {
     public String getDescription() {
         return description;
     }
-    public boolean getObject(){return object; }
+
 
     // returns a string representation of the item.
     @Override

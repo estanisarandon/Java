@@ -23,7 +23,7 @@ public class MainMenu {
     }
 
     public int runMenu() {
-        int userInput;
+        int userInput=0;
 
         do{
             printMenu();
@@ -31,7 +31,7 @@ public class MainMenu {
             Scanner scmenu = new Scanner(System.in);
             userInput = scmenu.nextInt();
 
-            if (userInput >= 0 && userInput <=4){
+            if (userInput > 0 && userInput <5){
                 return(userInput);
             } else{
                 System.out.println("Input not valid. Please select a number from the menu.");
