@@ -2,14 +2,12 @@ package kyh.textadventure;
 
 public class Room {
 
-    // We have variables for name, description and other parameters since this is necessary to determine the players
-    // current state in the world.
-
+    /* We have variables for name, description and other parameters
+    since this is necessary to determine the players current state in the world.*/
     private String name;
     private String description;
     private Item item;
-
-    public int numberOfDoors = 2;
+    private Item object;
 
     // Store the default values for name and description of a room.
     public Room(String inName, String inDescription) {
@@ -35,6 +33,19 @@ public class Room {
         }
     }
 
+    public String getItDescript() {
+        String I = "";
+        String O = "";
+        if(item != null) {
+            I = item.getDescription();
+        }
+        if(object != null) {
+            O = object.getDescription();
+        }
+        return I + "\n" +  O;
+
+    }
+
     public void setName(String newName) {
         name = newName;
     }
@@ -47,18 +58,28 @@ public class Room {
     public void setItem(Item inItem) {
         item = inItem;
     }
+    public void setObject(Item inObject){
+        object = inObject;
+    }
+
+    public void removeItem(){
+        item=null;
+    }
 
     // Create a string representation of a room to show in the main game loop.
     @Override
     public String toString() {
-        String roomString = getName() + "\n";                           // roomstring: "A hall"
-        roomString = roomString + getDescription() + "\n";              // roomstring: "A hall" + "this is a description of a hall.
-        roomString = roomString + "Items\n---------------\n";             // roomstring: "A hall" + "this is a ..." + "Items..."
+        String roomString = "\n" + getName() + "\n" + getDescription() + "\n";   // roomstring: "A hall" + "this is a description of a hall.
+        roomString = roomString + "\n" + "Items             Objects" +
+                "\n---------------   ---------------\n";             // roomstring: "A hall" + "this is a ..." + "Items..."
 
         // We need ot make sure that there is an item in the room before we try to call
         // a function in that item.
         if(item != null) {
-            roomString = roomString + item.getType();
+            roomString = roomString + "A " + item.getType();
+        }
+        if(object != null) {
+            roomString = roomString + "                  " + "A " + object.getType();
         }
 
         return roomString;

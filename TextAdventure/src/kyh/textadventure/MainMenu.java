@@ -24,19 +24,11 @@ public class MainMenu {
 
     public int runMenu() {
         int userInput=0;
-
-        do{
-            printMenu();
-            System.out.print("> ");
-            Scanner scmenu = new Scanner(System.in);
-            userInput = scmenu.nextInt();
-
-            if (userInput > 0 && userInput <5){
-                return(userInput);
-            } else{
-                System.out.println("Input not valid. Please select a number from the menu.");
-            }
-        }while (true);
+        printMenu();
+        System.out.print("> ");
+        Scanner scmenu = new Scanner(System.in);
+        userInput = scmenu.nextInt();
+        return userInput;
     }
 
 }

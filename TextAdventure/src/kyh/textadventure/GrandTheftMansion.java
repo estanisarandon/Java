@@ -1,8 +1,7 @@
 package kyh.textadventure;
 
-import java.util.ArrayList;
-import java.util.Locale;
-import java.util.Scanner;
+import java.util.*;
+
 
 public class GrandTheftMansion {
 
@@ -10,17 +9,19 @@ public class GrandTheftMansion {
     //Map size & Coordinates
     int row = 1;
     int col = 1;
-    int rowSize;
-    int colSize;
     Room[][] map;
-    boolean running = true;
-    ArrayList itemsList = new ArrayList();
-    ArrayList extraItems = new ArrayList();
-    ArrayList objectsList = new ArrayList();
-    ArrayList playerBag = new ArrayList();
+    Player player = new Player();
+    public ArrayList<Item> itemsList = new ArrayList<>();
+    public ArrayList<Item> extraItems = new ArrayList<>();
+    public ArrayList<Item> objects = new ArrayList<>();
+    public ArrayList<String> sorry = new ArrayList<String>();
 
+    public String getRandomElement(ArrayList<String> sorry){
+        Random rand = new Random();
+        return sorry.get(rand.nextInt(sorry.size()));
+    }
 
-    public void initialization(){
+    public void initialization() {
 
         //Room mindRoom = new Room("Mind room", "This is a room full with memories.");
         Room pinkRoom = new Room("Pink room", "This is a room with pink walls filled with pink furniture.");
@@ -28,41 +29,37 @@ public class GrandTheftMansion {
         Room kitchen = new Room("Kitchen", "This is a kitchen.");
         Room livingroom = new Room("Living room", "This is a room with a TV.");
         Room entrance = new Room("The entrance", "This is the entrance hall. There is a stair going to the second floor.");
-        Room vaultRoom = new Room("Vault room", "This is room has a vault.");
+        Room vaultRoom = new Room("Vault room", "There is a big safe in the middle of the room.");
         Room room1 = new Room("Room 1", "This is a room with just a single bed.");
         Room mainRoom = new Room("Main room", "This is the main room with double bed and a walking closet.");
         Room room2 = new Room("Room 2", "This is an empty room");
 
-        map =new Room[][] {
-            {pinkRoom, studio, kitchen},
-            {livingroom, entrance, vaultRoom},
-            {room1, mainRoom, room2}
+        map = new Room[][]{
+                {pinkRoom, studio, kitchen},
+                {livingroom, entrance, vaultRoom},
+                {room1, mainRoom, room2}
         };
 
-        this.rowSize=map[0].length;
-        this.colSize=map.length;
-
-        Item grog = new Item("Bottleof Grog", "A dilution of rum with water, with lime and sugar added.");
-        kitchen.setItem(grog);
+        Item grog = new Item("Bottle", "Bottle  of Grog: a dilution of rum with water, with lime and sugar added.");
+        pinkRoom.setItem(grog);
         itemsList.add(grog);
         Item note = new Item("Note", "A small piece of paper with some annotations.");
         entrance.setItem(note);
         itemsList.add(note);
-        Item hairpin = new Item("Bobby pin", "A type of hairpin made of metal.");
+        Item hairpin = new Item("Hairpin", "A hairpin made of metal.");
         room1.setItem(hairpin);
         itemsList.add(hairpin);
-        Item diary = new Item("Personal diary", "A small book with person's experiences, thoughts, and feelings.");
+        Item diary = new Item("Diary", "A small book with person's experiences, thoughts, and feelings.");
         studio.setItem(diary);
         itemsList.add(diary);
-        Item scissors = new Item("Scissors", "Small but very sharp paper scissors.");
-        studio.setItem(scissors);
-        itemsList.add(scissors);
-        Item knife = new Item("Butter knife", "A blunt knife used for cutting or spreading butter.");
+        Item knife = new Item("Knife", "A blunt knife used for cutting or spreading butter.");
         kitchen.setItem(knife);
         itemsList.add(knife);
         Item key = new Item("Key", "A small piece of shaped metal with incisions cut to fit the wards of a particular lock.");
         room2.setItem(key);
         itemsList.add(key);
+
+
 
         //This item will replace the picture_frame
         Item photo = new Item("Photo", "There is something written behind: Year 1987.");
@@ -72,69 +69,51 @@ public class GrandTheftMansion {
         extraItems.add(paper);
 
         //This objects can not be collected.
-        Item a_safe = new Item("A safe", "A strong fireproof cabinet with a complex lock, used for the storage of valuables.");
-        vaultRoom.setItem(a_safe);
-        objectsList.add(a_safe);
-        Item fireplace = new Item("A fireplace", "A place to make a fire. Looks like there is something in the back, but I can't see well through the fire.");
-        livingroom.setItem(fireplace);
-        objectsList.add(fireplace);
-        Item door = new Item("A door", "This door seams to be locked. I wonder what kind of room is on the other side.");
-        pinkRoom.setItem(door);
-        objectsList.add(door);
-        Item instructions = new Item("Vaults instructions", "YYYY-MM-DD-****.");
-        vaultRoom.setItem(instructions);
-        objectsList.add(instructions);
+        Item safe = new Item("Safe", "A strong fireproof cabinet with a complex lock, used for the storage of valuables.\n Safe instructions: YYYY-MM-DD-****");
+        vaultRoom.setObject(safe);
+        objects.add(safe);
+        Item fireplace = new Item("Fireplace", "A place to make a fire. Looks like there is something in the back, but I can't see well through the fire.");
+        livingroom.setObject(fireplace);
+        objects.add(fireplace);
+        Item door = new Item("Door", "This door seams to be locked. I wonder what kind of room is on the other side?");
+        pinkRoom.setObject(door);
+        objects.add(door);
+
 
         Container suitcase = new Container("Suitcase", "A case used for carrying clothes and other personal possessions.");
         Item wallet = new Item("Wallet", "A pocket-sized, flat, folding holder for money and plastic cards.");
-        itemsList.add(wallet);
         Item pen = new Item("Pen", "An instrument for writing.");
-        itemsList.add(pen);
-        Item picture_frame = new Item("Picture frame", "Has a picture of a dog wearing a suit and a hat, and a white rabbit. They look kinda familiar...");
-        itemsList.add(picture_frame);
+        Item picture = new Item("Picture frame", "Has a picture of a dog wearing a suit and a hat, and a white rabbit. They look kinda familiar...");
         suitcase.addItemsToContainer(wallet);
         suitcase.addItemsToContainer(pen);
-        suitcase.addItemsToContainer(picture_frame);
+        suitcase.addItemsToContainer(picture);
         mainRoom.setItem(suitcase);
+        itemsList.add(suitcase);
+
+        //Sorry not sorry
+        sorry.add("Sorry, I don't understand what are you saying.");
+        sorry.add("No hablo español.");
+        sorry.add("What did you just say?");
+        sorry.add("I can't process that order.");
 
     }
 
-    public String[] readUserInput(){
+
+
+    public String[] readUserInput() {
         System.out.print("> ");
         String commandInput = input.nextLine();
         String[] commandParts = commandInput.split(" ");
         return commandParts;
     }
 
-    //Setters & getters
-    public void setCoordinates(int row, int col) {
-        this.row = row;
-        this.col = col;
-    }
-
-    public void setRow(int newRow) {
-        this.row = newRow;
-    }
-    public void setCol(int newCol) {
-        this.col = newCol;
-    }
-    public int getRow() {
-        return this.row;
-    }
-    public int getCol() {
-        return this.col;
-    }
-    public int getRowSize() {
-        return this.rowSize;
-    }
-    public int getColSize() {
-        return this.colSize;
-    }
-
     public void run() {
         //Welcome menu
+        ArrayList playerBag = new ArrayList();
         MainMenu mainMenuInput = new MainMenu();
         int menuInput = mainMenuInput.runMenu();
+
+        boolean running = true; // run game while
 
         //Switcher
         switch (menuInput) {
@@ -146,68 +125,99 @@ public class GrandTheftMansion {
                 SaveAndLoad.load(); //Load game
                 break;
             case 3:
-                System.out.println("Show Hall of Fame"); // HallOfFame.ranking();
+                System.out.println(objects); // HallOfFame.ranking();
                 mainMenuInput.runMenu();
                 break;
             case 4:
-                this.running = false;
+                running = false;
                 break;
         }
 
-        Commands commands = new Commands();
-        ArrayList playerBag = new ArrayList();
-
-
-        while (this.running) {
-            // 1. Skriv ut i vilket rum vi är i
+        while (running == true) {
+            // Skriv ut i vilket rum vi är i
             System.out.println(map[row][col].toString());
 
-            // 2. Läs in kommando från användaren
-            System.out.println("Actions: [go][look att][use][pick up][Items]  [save][quit]");
+            // Läs in kommando från användaren
+            System.out.println("\n" + "Actions: [go][look att][use][pick up][Items]  [save][quit]");
             String[] commandParts = readUserInput();
             String command = commandParts[0];
 
+            // Show which items have been collected
+            if (command.equalsIgnoreCase("items")) {
+                player.printBag();
+            }
+
             // 4. Kollar vilket "huvudkommando" som angivits
             //    Dessa är:
-            //      - go        - pick up
+            //      X go        X pick up
             //      - look at   - use
             //
             if (command.equalsIgnoreCase("go")) {
                 if (commandParts.length >= 2) { // Kontrollera att man har skrivit något efter go, alltså en riktning
-                    if(commandParts[1].equalsIgnoreCase("north")) {
-                        commands.north();
-                    } else if (commandParts[1].equalsIgnoreCase("south")){
-                        if(row ==1 || row==2){
+                    if (commandParts[1].equalsIgnoreCase("north")) {
+                        if (row == 0 || row == 2) {
+                            System.out.println("You can't go north");
+                        } else {
+                            row--;
+                            if (row < 0) {
+                                row = 0;
+                            }
+                        }
+                    } else if (commandParts[1].equalsIgnoreCase("south")) {
+                        if (row >= 1) {
                             System.out.println("You can't go south.");
                         } else {
                             row++;
-                            if(row >= map.length){
+                            if (row > map.length) {
                                 row--;
                             }
                         }
-                    }
-                    } else if (commandParts[1].equalsIgnoreCase("east")){
-                        commands.east();
-                    } else if (commandParts[1].equalsIgnoreCase("west")){
-                        commands.west();
-                    } else if (commandParts[1].equalsIgnoreCase("up")){
-                        commands.up();
+                    } else if (commandParts[1].equalsIgnoreCase("east")) {
+                        if (col == 2) {
+                            System.out.println("You can't go east");
+                        } else {
+                            col++;
+                            if (col >= map.length) {
+                                col--;
+                            }
+                        }
+                    } else if (commandParts[1].equalsIgnoreCase("west")) {
+                        if (col == 0) {
+                            System.out.println("You can't go west");
+                        } else {
+                            col--;
+                            if (col < 0) {
+                                col = 0;
+                            }
+                        }
+                    } else if (commandParts[1].equalsIgnoreCase("up")) {
+                        if (row == 1 && col == 1) {
+                            col = 1;
+                            row = 2;
+                        } else {
+                            System.out.println("You can not go up.");
+                        }
                     } else if (commandParts[1].equalsIgnoreCase("down")) {
-                        commands.down();
-                    }else {
+                        if (row == 2) {
+                            col = 1;
+                            row = 1;
+                        } else {
+                            System.out.println("You can not go down.");
+                        }
+                    } else {
                         System.out.println("You can't go without a direction");
+                        System.out.println("E.g. go north");
                     }
                 }
             }
 
-            if (command.equalsIgnoreCase("items")){
-                System.out.println(playerBag);
+            if (command.equalsIgnoreCase("look")) {
+                if (commandParts.length < 2) {
+                    System.out.println(map[this.row][this.col].getItDescript());
+                    System.out.println("");
+                }
             }
 
-            if (command.equalsIgnoreCase("look")) {
-                String itemDescription = map[this.row][this.col].getItemDescription();
-                System.out.println(itemDescription);
-            }
 
             /*if (command.equalsIgnoreCase("use")) {
                 String useItem = commandParts[1];
@@ -216,12 +226,27 @@ public class GrandTheftMansion {
                 }*/
 
             if (command.equalsIgnoreCase("pick")) {
-                String itemToPick = commandParts[2].toLowerCase();
-                if(itemsList.contains(itemToPick)){
-                    playerBag.add(itemToPick);
-                    System.out.println("You have picked up a " + itemToPick);
-                } else {
-                    System.out.println("You can't pick up that");
+                if (commandParts.length <3) {
+                    System.out.println("You need to choose an item to pick up.");
+                    System.out.println("E.g. pick up book");
+                }else if (commandParts[2]!= null) {
+                    for (Item OLoop : objects) {
+                        if (OLoop.type.equalsIgnoreCase(commandParts[2])) {
+                            System.out.println("I can´t carry that around!");
+                        }
+                    }
+                    for (Item ILoop : itemsList) {
+                            if (ILoop.type.equalsIgnoreCase(commandParts[2])) {
+                                map[this.row][this.col].removeItem();
+                                System.out.println("You have picked up a " + ILoop.type + ".");
+                                player.addItem(ILoop.type, ILoop.description);
+                                int i = itemsList.indexOf(ILoop);
+                                itemsList.remove(i);
+                                break;
+                            }
+                    }
+                }else{
+                    System.out.println("You can't pick up that!");
                 }
             }
 
@@ -235,7 +260,8 @@ public class GrandTheftMansion {
                 case "quit":
                     running = false;
                     break;
-
+                //default:
+                   // System.out.println(getRandomElement(sorry));
             }
         }
     }
@@ -243,4 +269,5 @@ public class GrandTheftMansion {
     public void quit() {
         System.out.println("Thank you for playing Grand Theft Mansion");
     }
+}
 
