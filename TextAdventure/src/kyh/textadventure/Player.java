@@ -1,36 +1,12 @@
 package kyh.textadventure;
 
-import java.util.HashMap;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.function.Consumer;
 
-public class Player {
+public class Player extends ItemContainer {
 
-    private HashMap<String, String> bag = new HashMap<String, String>();
-
-
-    public void addItem(String inName, String inDescription){
-        bag.put(inName, inDescription);
+    public Player(String name, String description, ItemsList ilist){
+        super(name, description, ilist);
     }
-
-    public void printBag() {
-        boolean emptyBag=this.bag.isEmpty();
-        if(emptyBag==true){
-            System.out.println("You haven't collect anything yet.");
-        } else {
-            System.out.println("You have collected: ");
-            for (String bag : bag.keySet()) {
-                System.out.println(bag);
-            }
-        }
-    }
-
-    public void lookItemBag(String inName){
-        String item = bag.get(inName);
-        System.out.println(item);
-    }
-
-    /*public boolean isInBag (String inName){
-        if(inName : bag.keySet()){
-            return true;
-        }
-    }*/
 }
