@@ -11,17 +11,9 @@ public class Room extends ItemContainer{
     public String getRoomName(){
         return getName();
     }
-    public String getDescription() {
-        return String.format("%d. %d.", getName(), getDescription()) + "\nThis room contains:\n" + getItems().describeItems();
+    public String getRoomDescription() {
+        return String.format("%s: %s", getName(), getDescription())
+                + "\n" + "This room contains: \n" + getItems().describeItems();
     }
 
-    // Create a string representation of a room to show in the main game loop.
-//    @Override
-//    public String toString() {
-//        //String roomString = "\n" + getName() + "\n" + getDescription() + "\n";   // roomstring: "A hall" + "this is a description of a hall.
-//        //roomString = roomString + "\n" + "Things in this room:" + getItems();
-//        //return roomString;
-//
-//        return getDescription();
-//    }
 }
