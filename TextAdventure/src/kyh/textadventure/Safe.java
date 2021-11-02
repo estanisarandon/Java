@@ -6,9 +6,9 @@ public class Safe {
 
     public static int password() {
         Scanner input = new Scanner(System.in);
-        String Y = "19821105";
+        String Y = "19871105";
         String S = "2408";
-        SaveAndLoad.read("CC");
+        Read.read("CC");
         System.out.print("> ");
         String passwordTest = input.nextLine();
         String[] passwordSplit = passwordTest.split("-");

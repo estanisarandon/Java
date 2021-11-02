@@ -1,8 +1,5 @@
 package kyh.textadventure;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.function.Consumer;
 
 public class Player extends ItemContainer {
 

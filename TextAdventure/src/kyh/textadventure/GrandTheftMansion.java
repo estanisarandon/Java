@@ -125,10 +125,6 @@ public class GrandTheftMansion {
         String[] commandParts = commandInput.split(" ");
         return commandParts;
     }
-    public void setCoordinates(int row, int col){
-        this.row = row;
-        this.col = col;
-    }
     public void pickUpItem(Thing I, ItemsList from, ItemsList destination){
         from.remove(I);
         destination.add(I);
@@ -141,6 +137,9 @@ public class GrandTheftMansion {
         }
         playerBag.remove(D);
         System.out.println("You have collected new items!");
+    }
+    public Room[][] getMap() {
+        return map;
     }
 
     public void run() {
@@ -159,7 +158,7 @@ public class GrandTheftMansion {
                 this.playerName = this.input.nextLine();
                 //Runtime.getRuntime().exec("cls");
                 System.out.println("\n" + "_________________" + "\n" + playerName.toUpperCase() + "!");
-                SaveAndLoad.read("AA");
+                Read.read("AA");
                 break;
             case 2: // load game
                 System.out.println("That option is not available at the moment.");
@@ -275,7 +274,7 @@ public class GrandTheftMansion {
                             System.out.println(I.getDescription());
                         }else if(commandParts[2].equals("window")) {
                             if (this.row == 2 && this.col == 2) {
-                                SaveAndLoad.read("BB");
+                                Read.read("BB");
                             }
                         }else if(!map[this.row][this.col].getItems().isEmpty()) {
                             System.out.println("This room contains:" + map[this.row][this.col].getItems().describeItems());
@@ -293,7 +292,7 @@ public class GrandTheftMansion {
                                 while(r==true) {
                                     int p = Safe.password();
                                     if (p == 1) {
-                                        SaveAndLoad.read("FF");
+                                        Read.read("FF");
                                         running = false;
                                         r=false;
                                     } else {

@@ -11,7 +11,6 @@ public class Thing {
         name=inName;
         description=inDescription;
     }
-
     public String getName() {
         return name;
     }
@@ -19,10 +18,4 @@ public class Thing {
         return description;
     }
 
-    /*public void setName(String inName) {
-        name = inName;
-    }
-    public void setDescription(String inDescription) {
-        description = inDescription;
-    }*/
 }

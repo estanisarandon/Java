@@ -16,7 +16,6 @@ public class ItemsList extends ArrayList<Thing>{
         }
         return s;
     }
-
     public Thing thisItem(String inName){
         Thing item = null;
         String itemName = "";
@@ -29,7 +28,6 @@ public class ItemsList extends ArrayList<Thing>{
         }
         return item;
     }
-
     public String namesIL (){
         String s = "";
         if (this.size()==0){
@@ -41,6 +39,4 @@ public class ItemsList extends ArrayList<Thing>{
         }
         return s;
     }
-
-
 }
