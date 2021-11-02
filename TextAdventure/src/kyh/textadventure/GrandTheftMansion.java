@@ -16,18 +16,22 @@ public class GrandTheftMansion {
     ItemsList playerBag = new ItemsList();
     Player player = new Player(playerName, "",playerBag);
 
-
     //Array Lists
     public ArrayList<String> containers = new ArrayList<String>();
-    public ArrayList<String> objects = new ArrayList<String>(); // List of all objects for pick up order
+    public ArrayList<String> objects = new ArrayList<String>(); // List of all objects that can not be picked up
     public ArrayList<String> sorry = new ArrayList<String>(); // List of fail random answers
     public ArrayList<String> actions = new ArrayList<String>(); // List of possible actions
+
+    //Item containers
+    ItemsList suitcaseList = new ItemsList();
+    ItemContainer suitcase = new ItemContainer("Suitcase", "A case used for carrying clothes and other personal possessions. Seems to be full of stuff.", suitcaseList);
+    ItemsList walletList = new ItemsList();
+    ItemContainer wallet = new ItemContainer("Wallet", "A pocket-sized, flat, folding holder for money and plastic cards.", walletList);
 
     public String getRandomAnswer(){
         Random random = new Random();
         return sorry.get(random.nextInt(sorry.size()));
     }
-
     public void initialization() {
 
         //Create item list to each room
@@ -70,10 +74,6 @@ public class GrandTheftMansion {
         kitchenList.add(knife);
         Item picture = new Item("Picture frame", "Has a photo of a dog wearing a suit and a hat, and a white rabbit. They look kinda familiar...\n" + "There is something written behind: Year 1987.");
         studioList.add(picture);
-
-        //Item Containers creation
-        ItemsList suitcaseList = new ItemsList();
-        ItemContainer suitcase = new ItemContainer("Suitcase", "A case used for carrying clothes and other personal possessions. Seems to be full of stuff.", suitcaseList);
         Item pen = new Item("Pen", "An instrument for writing.");
         suitcaseList.add(pen);
         Item key = new Item("Key", "A small piece of shaped metal with incisions cut to fit the wards of a particular lock.");
@@ -81,9 +81,6 @@ public class GrandTheftMansion {
         Item diary = new Item("Diary", "A small book with person's experiences, thoughts, and feelings.");
         suitcaseList.add(diary);
         mainRoomList.add(suitcase);
-
-        ItemsList walletList = new ItemsList();
-        ItemContainer wallet = new ItemContainer("Wallet", "A pocket-sized, flat, folding holder for money and plastic cards.", walletList);
         Item paper = new Item("Paper scrap", "It says YYYY-MM-DD-08.. \n Looks like it's missing the last part.");
         walletList.add(paper);
         room2List.add(wallet);
@@ -95,6 +92,8 @@ public class GrandTheftMansion {
         livingroomList.add(fireplace);
         Object door = new Object("Door", "This door seams to be locked. I wonder what kind of room is on the other side?");
         pinkRoomList.add(door);
+        Object window = new Object("Window", "An opening in the wall that allow people to see out.");
+        room2List.add(window);
 
         //Sorry not sorry
         sorry.add("Sorry, I don't understand what are you saying.");
@@ -120,26 +119,26 @@ public class GrandTheftMansion {
         actions.add("quit");
 
     }
-
     public String[] readUserInput() {
         System.out.print("> ");
         String commandInput = input.nextLine();
         String[] commandParts = commandInput.split(" ");
         return commandParts;
     }
-
     public void setCoordinates(int row, int col){
         this.row = row;
         this.col = col;
     }
-
     public void pickUpItem(Thing I, ItemsList from, ItemsList destination){
         from.remove(I);
         destination.add(I);
     }
-
-    public void openContainer(Thing D, ItemsList from){
-        from.addAll(playerBag);
+    public void openContainer(Thing D, String inName){
+        if(inName.equals("suitcase")){
+            playerBag.addAll(suitcase.getItems());
+        }else if(inName.equals("wallet")){
+            playerBag.addAll(wallet.getItems());
+        }
         playerBag.remove(D);
         System.out.println("You have collected new items!");
     }
@@ -159,6 +158,8 @@ public class GrandTheftMansion {
                 System.out.print("> ");
                 this.playerName = this.input.nextLine();
                 //Runtime.getRuntime().exec("cls");
+                System.out.println("\n" + "_________________" + "\n" + playerName.toUpperCase() + "!");
+                SaveAndLoad.read("AA");
                 break;
             case 2: // load game
                 System.out.println("That option is not available at the moment.");
@@ -186,7 +187,7 @@ public class GrandTheftMansion {
             String command = commandParts[0];
             String target= "";
             if(commandParts.length ==3){
-                target = commandParts[2];
+                target = commandParts[2].toLowerCase();
             }
 
             if(actions.contains(command)){
@@ -255,6 +256,7 @@ public class GrandTheftMansion {
                         break;
                     case "look": //look at room, items or objects
                         if (commandParts.length < 2){
+                            System.out.println("You look around the room and you see:");
                             System.out.println(map[this.row][this.col].getItems().describeItems());
                         }else if (commandParts.length < 3){
                             if(commandParts[1].equalsIgnoreCase("at")) {
@@ -262,24 +264,21 @@ public class GrandTheftMansion {
                             }else{
                                 System.out.println(getRandomAnswer());
                             }
-                        }else if(target.equals("suitcase") || target.equals("wallet")){
-                            if(playerBag.contains(target)){
-                                System.out.println("You have open an Item Container!");
-//                                if(target.equals("suitcase")){
-//                                    openContainer(this, this);
-//                                }else{
-//                                    openContainer(this, this);
-//                                }
-                            }else {
+                        }else if(containers.contains(target)){
+                            if(playerBag.contains(playerBag.thisItem(target))){
+                                openContainer(playerBag.thisItem(target), target);
+                            }else{
                                 System.out.println("You don´t have a " + target + " in your bag.");
                             }
-                        }else if(map[this.row][this.col].getItems()!=null) {
-                            System.out.println(map[this.row][this.col].getItems().describeItems());
-                        }else if (playerBag.contains(target)){
+                        }else if (playerBag.contains(playerBag.thisItem(target))) {
                             Thing I = playerBag.thisItem(target);
                             System.out.println(I.getDescription());
-                        }else if(containers.contains(target)){
-                            openContainer(playerBag.thisItem(target), player.getListName(target));
+                        }else if(commandParts[2].equals("window")) {
+                            if (this.row == 2 && this.col == 2) {
+                                SaveAndLoad.read("BB");
+                            }
+                        }else if(!map[this.row][this.col].getItems().isEmpty()) {
+                            System.out.println("This room contains:" + map[this.row][this.col].getItems().describeItems());
                         }else{
                             System.out.println("What do you want to look at?");
                         }
@@ -288,6 +287,27 @@ public class GrandTheftMansion {
                         if (commandParts.length < 2) {
                             System.out.println("What do you want to use?");
                             System.out.println("E.g.: use pen" + "\n" +  "      OR" + "\n" + "      use pen with paper");
+                        } else if(commandParts[1].equals("safe")){
+                            if (this.row==1 && this.col==2){
+                                boolean r = true;
+                                while(r==true) {
+                                    int p = Safe.password();
+                                    if (p == 1) {
+                                        SaveAndLoad.read("FF");
+                                        running = false;
+                                        r=false;
+                                    } else {
+                                        System.out.println("Do you want to try again? [Y/N]");
+                                        System.out.print("> ");
+                                        String A = input.nextLine().toUpperCase();
+                                        if (A.equals("N")) {
+                                            r = false;
+                                        }
+                                    }
+                                }
+                            }else{
+                                System.out.println("There is no safe in here");
+                            }
                         }
                         break;
                     case "pick": // pick up items

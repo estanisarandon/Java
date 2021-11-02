@@ -15,11 +15,8 @@ public class ItemContainer extends Thing{
         return itemsList;
     }
 
-    public void setItems(ItemsList addItemList){
+    /*public void setItems(ItemsList addItemList){
         this.itemsList = addItemList;
-    }
+    }*/
 
-    public ItemsList getListName(String iName){
-        return itemsList;
-    }
 }

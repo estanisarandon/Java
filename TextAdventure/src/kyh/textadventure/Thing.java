@@ -19,10 +19,10 @@ public class Thing {
         return description;
     }
 
-    public void setName(String inName) {
+    /*public void setName(String inName) {
         name = inName;
     }
     public void setDescription(String inDescription) {
         description = inDescription;
-    }
+    }*/
 }
