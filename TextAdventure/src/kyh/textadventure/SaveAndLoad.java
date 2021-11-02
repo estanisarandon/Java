@@ -23,7 +23,7 @@ public class SaveAndLoad {
     }
 
     //Load game
-    public static int[] load() {
+    public static void load(GrandTheftMansion game) {
         File file = new File("./Files/saved_game.txt");
         String position = "";
         try {
@@ -38,12 +38,9 @@ public class SaveAndLoad {
             String[] pos = position.split(", ");
             int row = Integer.parseInt(pos[0]);
             int col = Integer.parseInt(pos[1]);
-            int[] returnValue ={row, col};
-            return returnValue;
-
-            /*GrandTheftMansion.setCoordinates(row, col);
-
-            if (row >= GrandTheftMansion.getRowSize()) {
+            game.setCoordinates(row, col);
+        }
+            /*if (row >= GrandTheftMansion.getRowSize()) {
                 System.out.println("Error reading row coordinates from file. Are you cheating?");
                 GrandTheftMansion.setCoordinates(1,1);
             } else {
@@ -51,9 +48,8 @@ public class SaveAndLoad {
                     System.out.println("Error reading row coordinates from file. Are you cheating?");
                     GrandTheftMansion.setCoordinates(1,1);
                 }
+                int[] returnValue ={row, col};
+            return returnValue;
             }*/
-        }
-
-        return null;
     }
 }

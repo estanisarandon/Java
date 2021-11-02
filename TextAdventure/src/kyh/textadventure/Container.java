@@ -3,9 +3,15 @@ package kyh.textadventure;
 import java.util.ArrayList;
 
 // Chest that is able to contain other items.
-public class Container extends Item {
-    ArrayList<Item> inventory = new ArrayList<Item>();
+public class Container extends ArrayList<Item> {
+
+
+
+
+    /*public ArrayList<Item> inventory = new ArrayList<Item>();
     int maxSize = 4;
+
+    Player player = new Player();
 
     // Create a new chest with the same information as a default item.
     public Container(String inType, String inDescription) {super(inType, inDescription);
@@ -16,6 +22,16 @@ public class Container extends Item {
         if(inventory.size() < maxSize) {
             inventory.add(inItems);
         }
+    }
+
+    public void removeItems(Item inItem){
+        inventory.remove(inItem);
+    }
+
+    public ArrayList<Item> containerHas(Container C){
+        //int i = player.bag.indexOf(C);
+        //Container
+        return C.inventory;
     }
 
     @Override
@@ -31,7 +47,6 @@ public class Container extends Item {
                 itemDescription = itemDescription + inventory.get(i).toString() + "\n";
             }
         }
-
         return itemDescription;
-    }
+    }*/
 }
