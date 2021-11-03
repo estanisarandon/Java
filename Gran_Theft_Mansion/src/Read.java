@@ -8,7 +8,8 @@ public class Read {
 
     //Read script
     public static void read(String s){
-        File file = new File("./Files/Script.txt");
+        File file;
+        file = new File("./Gran_Theft_Mansion/Files/Script.txt");
         String start = "";
         String output="";
         try {
@@ -18,7 +19,7 @@ public class Read {
                 start = fileScanner.findInLine(s);
                 fileScanner.nextLine();
             }
-            while (run == true) {
+            while (run) {
                 output += fileScanner.nextLine() + "\n";
                 if(output.contains("***")){
                     run=false;

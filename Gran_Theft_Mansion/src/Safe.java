@@ -1,7 +1,5 @@
 package kyh.textadventure;
 
-import java.util.Scanner;
-
 public class Safe {
 
     public static int password(String[] input) {

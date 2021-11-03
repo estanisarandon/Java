@@ -2,13 +2,12 @@ package kyh.textadventure;
 
 import java.util.ArrayList;
 
-
 public class ItemsList extends ArrayList<Thing>{
 
     public String describeItems(){
         String s = "";
         if (this.size()==0){
-            s = "nothing.";
+            s = "nothing";
         }else{
             for(Thing t : this){
                 s = s + "\n" + t.getName() + ": " + t.getDescription();
@@ -31,7 +30,7 @@ public class ItemsList extends ArrayList<Thing>{
     public String namesIL (){
         String s = "";
         if (this.size()==0){
-            s = "empty.";
+            s = "nothing";
         }else{
             for(Thing t: this){
                 s = s + "\n" + t.getName();

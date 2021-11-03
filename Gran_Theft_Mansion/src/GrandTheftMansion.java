@@ -18,10 +18,10 @@ public class GrandTheftMansion {
     Player player = new Player(playerName, "",playerBag);
 
     //Array Lists
-    public ArrayList<String> containers = new ArrayList<String>();
-    public ArrayList<String> objects = new ArrayList<String>(); // List of all objects that can not be picked up
-    public ArrayList<String> sorry = new ArrayList<String>(); // List of fail random answers
-    public ArrayList<String> actions = new ArrayList<String>(); // List of possible actions
+    public ArrayList<String> containers = new ArrayList<>();
+    public ArrayList<String> objects = new ArrayList<>(); // List of all objects that can not be picked up
+    public ArrayList<String> sorry = new ArrayList<>(); // List of fail random answers
+    public ArrayList<String> actions = new ArrayList<>(); // List of possible actions
 
     //Item containers
     ItemsList suitcaseList = new ItemsList();
@@ -122,9 +122,8 @@ public class GrandTheftMansion {
     }
     public String[] readUserInput() {
         System.out.print("> ");
-        String commandInput = input.nextLine();
-        String[] commandParts = commandInput.split(" ");
-        return commandParts;
+        String commandInput = input.nextLine().toLowerCase();
+        return commandInput.split(" ");
     }
     public void pickUpItem(Thing I, ItemsList from, ItemsList destination){
         from.remove(I);
@@ -148,11 +147,11 @@ public class GrandTheftMansion {
 
         //Welcome menu
         boolean runMenu = true;
-        while(runMenu==true) {
+        while(runMenu) {
             MainMenu mainMenuInput = new MainMenu();
             int menuInput = mainMenuInput.runMenu();
             switch (menuInput) { //Switcher Main menu
-                case 1:
+                case 1 -> {
                     System.out.println("Loading..."); //Start game
                     System.out.print("");
                     System.out.print("Please enter your name:");
@@ -162,35 +161,37 @@ public class GrandTheftMansion {
                     Read.read("AA");
                     System.out.println("Press ENTER to continue...");
                     input.nextLine();
-                    runMenu=false;
-                    break;
-                case 2: // load game
+                    runMenu = false;
+                }
+                case 2 -> { // load game
                     System.out.println("This option is not available at the moment.");
                     System.out.println("Press ENTER to continue...");
                     input.nextLine();
-                    //SaveAndLoad.load(this); //Load game
-                    break;
-                case 3: // show credits
+                }
+                //SaveAndLoad.load(this); //Load game
+                case 3 -> { // show credits
                     mainMenuInput.Credits();
                     System.out.println("Press ENTER to continue...");
                     input.nextLine();
-                    break;
-                case 4: // quit game
-                    runMenu=false;
+                }
+                case 4 -> { // quit game
+                    runMenu = false;
                     running = false;
-                    break;
-                default:
+                }
+                default -> {
                     System.out.println("Please select a number from the menu.");
                     mainMenuInput.runMenu();
+                }
             }
         }
 
-        while (running == true) {
+        while (running) {
             // Print room information
             System.out.println("\n" + "_________________" + "\n" + map[row][col].getRoomDescription());
 
             // Read user input
             System.out.println("\n" + "Actions: [go][look at][use][pick up][bag]  [quit]");
+            Room.printExits(this.row, this.col);
             String[] commandParts = readUserInput();
             String command = commandParts[0];
             String target= "";
@@ -203,8 +204,8 @@ public class GrandTheftMansion {
                         System.out.println("You have collected:");
                         System.out.println(playerBag.namesIL());
                         break;
-                    case "go": //move player around
-                        if (commandParts.length >= 2) { // Kontrollera att man har skrivit något efter go, alltså en riktning
+                    case "go": //Move player around
+                        if (commandParts.length >= 2) {
                             if (commandParts[1].equalsIgnoreCase("north") || commandParts[1].equalsIgnoreCase("n")){
                                 if (row == 0 || row == 2) {
                                     System.out.println("You can't go north");
@@ -243,7 +244,6 @@ public class GrandTheftMansion {
                                 }
                             }else if (commandParts[1].equalsIgnoreCase("up")) {
                                 if (row == 1 && col == 1) {
-                                    col = 1;
                                     row = 2;
                                 } else {
                                     System.out.println("You can not go up.");
@@ -261,7 +261,7 @@ public class GrandTheftMansion {
                             }
                         }
                         break;
-                    case "look": //look at room, items or objects
+                    case "look": //Look at room, items or objects
                         if (commandParts.length < 2){
                             System.out.println("You look around the room and you see:");
                             System.out.println(map[this.row][this.col].getItems().describeItems());
@@ -294,15 +294,18 @@ public class GrandTheftMansion {
                             System.out.println("What do you want to look at?");
                         }
                         break;
-                    case "use": //use collected items
+                    case "use": //Use collected items
                         if (commandParts.length < 2) {
                             System.out.println("What do you want to use?");
-                            System.out.println("E.g.: use pen" + "\n" +  "      OR" + "\n" + "      use pen with paper");
+                            System.out.println("""
+                                    E.g.: use pen
+                                          OR
+                                          use pen with paper""");
                         } else if(commandParts[1].equalsIgnoreCase("safe")){
                             if (this.row==1 && this.col==2){
                                 Scanner input = new Scanner(System.in);
                                 boolean r = true;
-                                while(r==true){
+                                while(r){
                                     Read.read("CC");
                                     String password = input.nextLine();
                                     String[] passwordParts = password.split("-");
@@ -317,7 +320,7 @@ public class GrandTheftMansion {
                                         System.out.println("Do you want to try again? [Y/N]");
                                         System.out.print("> ");
                                         String answer = input.nextLine();
-                                        if ("N".equalsIgnoreCase(answer.toUpperCase())){
+                                        if ("N".equalsIgnoreCase(answer)){
                                             r = false;
                                         }
                                     }
@@ -329,7 +332,7 @@ public class GrandTheftMansion {
                             Read.read("GG");
                         }
                         break;
-                    case "pick": // pick up items
+                    case "pick": //Pick up items
                         if (commandParts.length <3) {
                             System.out.println("You need to choose an item to pick up.");
                             System.out.println("E.g.: pick up book");
@@ -347,15 +350,13 @@ public class GrandTheftMansion {
                             System.out.println("You can't pick up that!");
                         }
                         break;
-                    case "save": // save game
+                    case "save": //Save game
+                    case "load": //Load game
                         System.out.println("That option is not available at the moment.");
                         //SaveAndLoad.save(this.row, this.col);
                         break;
-                    case "load": // load game
-                        System.out.println("That option is not available at the moment.");
-                        //SaveAndLoad.load(this);
-                        break;
-                    case "quit": // finish game
+                    //SaveAndLoad.load(this);
+                    case "quit": //End game
                         running = false;
                         break;
                 }

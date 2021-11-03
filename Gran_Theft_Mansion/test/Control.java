@@ -27,6 +27,11 @@ public class Control {
         int testInput = Safe.password(new String[]{"19871105", "2408"});
         assertEquals(1,testInput);
     }
+    @Test
+    public void testLettersPassword(){
+        int testInput = Safe.password(new String[]{"casa", "blanca"});
+        assertEquals(0,testInput);
+    }
 
     @Test
     public void testGetRoomName(){
@@ -35,9 +40,4 @@ public class Control {
         String nameRoom = T.getRoomName();
         assertEquals("tRoom",nameRoom);
     }
-
-
-
-
-
 }
