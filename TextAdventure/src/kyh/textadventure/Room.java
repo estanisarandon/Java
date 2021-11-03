@@ -13,7 +13,7 @@ public class Room extends ItemContainer{
     }
     public String getRoomDescription() {
         return String.format("%s: %s", getName(), getDescription())
-                + "\n" + "This room contains: \n" + getItems().describeItems();
+                + "\n" + "This room contains: \n" + getItems().getThingsName();
     }
 
 }

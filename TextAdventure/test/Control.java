@@ -1,14 +1,8 @@
 import static org.junit.jupiter.api.Assertions.*;
 
 import kyh.textadventure.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.util.Comparator;
-import java.util.Objects;
 
 public class Control {
 
@@ -23,21 +17,23 @@ public class Control {
         assertEquals(V, 0);
     }
 
-
     @Test
-    public void testWrongPassword() throws UnsupportedEncodingException {
-        InputStream sysInBackup = System.in; // backup System.in to restore it later
-        ByteArrayInputStream in = new ByteArrayInputStream("passwordTest".getBytes( "19871212"));
-        Safe.password();
-        System.setIn(in); // do your thing
-        assertEquals(0,0);
-        System.setIn(sysInBackup); // optionally, reset System.in to its original
-
+    public void testWrongPassword(){
+        int testInput = Safe.password(new String[]{"12454", "12"});
+        assertEquals(0,testInput);
+    }
+    @Test
+    public void testRightPassword(){
+        int testInput = Safe.password(new String[]{"19871105", "2408"});
+        assertEquals(1,testInput);
     }
 
-    public void testCreateThing(){
-        Thing t = new Thing ("test", "this is a test");
-
+    @Test
+    public void testGetRoomName(){
+        ItemsList tList = new ItemsList();
+        Room T = new Room("tRoom", "test the room constructor", tList);
+        String nameRoom = T.getRoomName();
+        assertEquals("tRoom",nameRoom);
     }
 
 

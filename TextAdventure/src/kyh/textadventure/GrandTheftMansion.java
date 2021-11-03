@@ -1,5 +1,6 @@
 package kyh.textadventure;
 
+
 import java.util.*;
 
 
@@ -72,7 +73,7 @@ public class GrandTheftMansion {
         room1List.add(hairpin);
         Item knife = new Item("Knife", "A blunt knife used for cutting or spreading butter.");
         kitchenList.add(knife);
-        Item picture = new Item("Picture frame", "Has a photo of a dog wearing a suit and a hat, and a white rabbit. They look kinda familiar...\n" + "There is something written behind: Year 1987.");
+        Item picture = new Item("Picture", "Has a photo of a dog wearing a suit and a hat, and a white rabbit. They look kinda familiar...\n" + "There is something written behind: Year 1987.");
         studioList.add(picture);
         Item pen = new Item("Pen", "An instrument for writing.");
         suitcaseList.add(pen);
@@ -81,7 +82,7 @@ public class GrandTheftMansion {
         Item diary = new Item("Diary", "A small book with person's experiences, thoughts, and feelings.");
         suitcaseList.add(diary);
         mainRoomList.add(suitcase);
-        Item paper = new Item("Paper scrap", "It says YYYY-MM-DD-08.. \n Looks like it's missing the last part.");
+        Item paper = new Item("Paper", "It says YYYY-MM-DD-08.. \n Looks like it's missing the last part.");
         walletList.add(paper);
         room2List.add(wallet);
 
@@ -142,38 +143,46 @@ public class GrandTheftMansion {
         return map;
     }
 
-    public void run() {
-        //Welcome menu
-        MainMenu mainMenuInput = new MainMenu();
-        int menuInput = mainMenuInput.runMenu();
-
+    public void run(){
         boolean running = true; // run game while
 
-        switch (menuInput) { //Switcher Main menu
-            case 1:
-                System.out.println("Loading..."); //Start game
-                System.out.print("");
-                System.out.print("Please enter your name:");
-                System.out.print("> ");
-                this.playerName = this.input.nextLine();
-                //Runtime.getRuntime().exec("cls");
-                System.out.println("\n" + "_________________" + "\n" + playerName.toUpperCase() + "!");
-                Read.read("AA");
-                break;
-            case 2: // load game
-                System.out.println("That option is not available at the moment.");
-                mainMenuInput.runMenu();
-                //SaveAndLoad.load(this); //Load game
-                break;
-            case 3: // show credits
-                mainMenuInput.Credits();
-                break;
-            case 4: // quit game
-                running = false;
-                break;
-            default:
-                System.out.println("Please select a number from the menu.");
-                mainMenuInput.runMenu();
+        //Welcome menu
+        boolean runMenu = true;
+        while(runMenu==true) {
+            MainMenu mainMenuInput = new MainMenu();
+            int menuInput = mainMenuInput.runMenu();
+            switch (menuInput) { //Switcher Main menu
+                case 1:
+                    System.out.println("Loading..."); //Start game
+                    System.out.print("");
+                    System.out.print("Please enter your name:");
+                    System.out.print("> ");
+                    this.playerName = this.input.nextLine();
+                    System.out.println("\n" + "_________________" + "\n" + playerName.toUpperCase() + "!");
+                    Read.read("AA");
+                    System.out.println("Press ENTER to continue...");
+                    input.nextLine();
+                    runMenu=false;
+                    break;
+                case 2: // load game
+                    System.out.println("This option is not available at the moment.");
+                    System.out.println("Press ENTER to continue...");
+                    input.nextLine();
+                    //SaveAndLoad.load(this); //Load game
+                    break;
+                case 3: // show credits
+                    mainMenuInput.Credits();
+                    System.out.println("Press ENTER to continue...");
+                    input.nextLine();
+                    break;
+                case 4: // quit game
+                    runMenu=false;
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Please select a number from the menu.");
+                    mainMenuInput.runMenu();
+            }
         }
 
         while (running == true) {
@@ -188,7 +197,6 @@ public class GrandTheftMansion {
             if(commandParts.length ==3){
                 target = commandParts[2].toLowerCase();
             }
-
             if(actions.contains(command)){
                 switch (command.toLowerCase()){
                     case "bag": // Show which items have been collected
@@ -257,27 +265,31 @@ public class GrandTheftMansion {
                         if (commandParts.length < 2){
                             System.out.println("You look around the room and you see:");
                             System.out.println(map[this.row][this.col].getItems().describeItems());
-                        }else if (commandParts.length < 3){
-                            if(commandParts[1].equalsIgnoreCase("at")) {
+                        }else if (commandParts.length < 3) {
+                            if (commandParts[1].equalsIgnoreCase("at")) {
                                 System.out.println("What do you want to look at?");
-                            }else{
+                            } else {
                                 System.out.println(getRandomAnswer());
                             }
-                        }else if(containers.contains(target)){
-                            if(playerBag.contains(playerBag.thisItem(target))){
-                                openContainer(playerBag.thisItem(target), target);
-                            }else{
-                                System.out.println("You don´t have a " + target + " in your bag.");
+                        }else if(commandParts.length <4 && commandParts[1].equalsIgnoreCase("at")){
+                            if(containers.contains(target)){
+                                if(playerBag.contains(playerBag.thisItem(target))){
+                                    openContainer(playerBag.thisItem(target), target);
+                                }else{
+                                    System.out.println("You don´t have a " + target + " in your bag.");
+                                }
+                            }else if(playerBag.contains(playerBag.thisItem(target))){
+                                Thing I = playerBag.thisItem(target);
+                                System.out.println(I.getDescription());
+                            }else if(commandParts[2].equals("window")){
+                                if (this.row == 2 && this.col == 2) {
+                                    Read.read("BB");
+                                }
+                            }else if(map[this.row][this.col].getItems().contains(map[this.row][this.col].getItems().thisItem(target))){
+                                System.out.println(map[this.row][this.col].getItems().thisItem(target).getDescription());
+                            }else {
+                                System.out.println("What do you want to look at?");
                             }
-                        }else if (playerBag.contains(playerBag.thisItem(target))) {
-                            Thing I = playerBag.thisItem(target);
-                            System.out.println(I.getDescription());
-                        }else if(commandParts[2].equals("window")) {
-                            if (this.row == 2 && this.col == 2) {
-                                Read.read("BB");
-                            }
-                        }else if(!map[this.row][this.col].getItems().isEmpty()) {
-                            System.out.println("This room contains:" + map[this.row][this.col].getItems().describeItems());
                         }else{
                             System.out.println("What do you want to look at?");
                         }
@@ -286,20 +298,26 @@ public class GrandTheftMansion {
                         if (commandParts.length < 2) {
                             System.out.println("What do you want to use?");
                             System.out.println("E.g.: use pen" + "\n" +  "      OR" + "\n" + "      use pen with paper");
-                        } else if(commandParts[1].equals("safe")){
+                        } else if(commandParts[1].equalsIgnoreCase("safe")){
                             if (this.row==1 && this.col==2){
+                                Scanner input = new Scanner(System.in);
                                 boolean r = true;
-                                while(r==true) {
-                                    int p = Safe.password();
+                                while(r==true){
+                                    Read.read("CC");
+                                    String password = input.nextLine();
+                                    String[] passwordParts = password.split("-");
+                                    int p = Safe.password(passwordParts);
                                     if (p == 1) {
+                                        System.out.println("Press ENTER to continue...");
+                                        input.nextLine();
                                         Read.read("FF");
                                         running = false;
                                         r=false;
-                                    } else {
+                                    }else{
                                         System.out.println("Do you want to try again? [Y/N]");
                                         System.out.print("> ");
-                                        String A = input.nextLine().toUpperCase();
-                                        if (A.equals("N")) {
+                                        String answer = input.nextLine();
+                                        if ("N".equalsIgnoreCase(answer.toUpperCase())){
                                             r = false;
                                         }
                                     }
@@ -307,6 +325,8 @@ public class GrandTheftMansion {
                             }else{
                                 System.out.println("There is no safe in here");
                             }
+                        } else if(commandParts[1].equalsIgnoreCase("diary")){
+                            Read.read("GG");
                         }
                         break;
                     case "pick": // pick up items
