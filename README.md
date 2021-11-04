@@ -1,8 +1,8 @@
 # Java
 
-Utbildning: Internet of Things, Malmö
-Klass: IoT20
-Lärare: Joakim Wassberg (Kursansvarig), lärare i Malmö
+Utbildning: Internet of Things, Malmö.
+Klass: IoT20.
+Lärare: Joakim Wassberg (Kursansvarig), lärare i Malmö.
 
 
 

@@ -1,8 +1,6 @@
 package kyh.textadventure;
 
-
 import java.util.*;
-
 
 public class GrandTheftMansion {
 
@@ -330,6 +328,8 @@ public class GrandTheftMansion {
                             }
                         } else if(commandParts[1].equalsIgnoreCase("diary")){
                             Read.read("GG");
+                        } else{
+                            System.out.println("I can´t use that!");
                         }
                         break;
                     case "pick": //Pick up items

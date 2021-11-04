@@ -20,7 +20,7 @@ public class MainMenu {
         System.out.println("------------------------------------");
     }
     public int runMenu() {
-        int userInput=0;
+        int userInput;
         printMenu();
         System.out.print("> ");
         Scanner scmenu = new Scanner(System.in);
